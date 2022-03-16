@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['cdn.coinranking.com', 'bing.com'],
+    domains: ['cdn.coinranking.com', 'www.bing.com', 'ih1.redbubble.net'],
   },
 }
 
