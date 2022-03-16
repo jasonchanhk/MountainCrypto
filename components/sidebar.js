@@ -71,7 +71,7 @@ export default function Layout({ children }) {
 
                     <IconContext.Provider value={{ size: "2em" }}>
                         <div className='px-4 flex items-center cursor-pointer'>
-                            <Link href={'/'}>
+                            <Link href={'/'} passHref>
                                 <GiMountaintop />
                             </Link>
                         </div>

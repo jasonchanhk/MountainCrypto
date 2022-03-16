@@ -1,6 +1,7 @@
 import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { getData } from './api/fetchingnews'
 import CreateHead from '../components/head'
+import Image from 'next/image'
 
 export async function getServerSideProps() {
   const newsList = await getData()
