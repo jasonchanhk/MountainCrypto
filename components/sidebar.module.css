@@ -2,8 +2,8 @@
 .logotext{
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    font-size: 24px;
-    vertical-align: middle;
-    display: inline-block;
-    padding-top: 5px;
+    font-size: 21px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
   }

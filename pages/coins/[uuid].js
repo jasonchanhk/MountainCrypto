@@ -15,12 +15,15 @@ import {
     Title,
     Tooltip,
     Legend,
-    Filler 
+    Filler
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { fromUnixTime, format } from 'date-fns'
 import { PercentageBetterment, ReadableNumber } from '../../components/expression'
-import { getData } from '../api/fetchingcoin/[uuid]'
+import { getData } from '../api/fetchingcoin/[...params]'
+import CreateHead from '../../components/head';
+import { useRouter } from 'next/router'
+
 
 ChartJS.register(
     CategoryScale,
@@ -30,7 +33,7 @@ ChartJS.register(
     Title,
     Tooltip,
     Legend,
-    Filler 
+    Filler
 );
 
 Tooltip.positioners.top = function (items) {
@@ -53,12 +56,6 @@ Tooltip.positioners.top = function (items) {
 
 export async function getServerSideProps(context) {
     const { uuid } = await context.query;
-    // const cryptoApiHeaders = {
-    //     'x-rapidapi-host': 'coinranking1.p.rapidapi.com',
-    //     'x-rapidapi-key': '9826df8039msh9f4a98e92644b74p1f2d7ejsn460d2c38c27a',
-    // };
-    // Fetch data from external API
-    // const res = await fetch(`https://coinranking1.p.rapidapi.com/coin/${uuid}`, { headers: cryptoApiHeaders })
     const coin = await getData(uuid)
     const coinDetail = await coin?.data?.coin
     return {
@@ -75,18 +72,13 @@ export default function coinDetail({ coinDetail }) {
     const uuid = coinDetail && coinDetail.uuid
 
     useEffect(() => {
-        const cryptoApiHeaders = {
-            'x-rapidapi-host': 'coinranking1.p.rapidapi.com',
-            'x-rapidapi-key': '9826df8039msh9f4a98e92644b74p1f2d7ejsn460d2c38c27a',
-        };
-        fetch(`https://coinranking1.p.rapidapi.com/coin/${uuid}/history/?timePeriod=${time}`, { headers: cryptoApiHeaders })
-            .then((res) => {
-                const data = res.json()
-                data.then((data2) => {
-                    const currentHistory = data2?.data?.history
-                    setHistory(currentHistory)
-                    console.log(currentHistory)
-                })
+
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/fetchingcoin/${uuid}/${time}`)
+            .then((res) => res.json())
+            .then((data) => {                
+                const currentHistory=  data.data
+                setHistory(currentHistory)
+                console.log(currentHistory)
             })
             .catch((error) => {
                 console.log('error', error)
@@ -98,9 +90,9 @@ export default function coinDetail({ coinDetail }) {
         let coinTimeStamp = []
         for (var i = history.length - 1; i >= 0; i--) {
             coinPrice.push(ReadableNumber(history[i].price))
-            if( time == '1y'|| time == '3y' || time == '5y'){
+            if (time == '1y' || time == '3y' || time == '5y') {
                 coinTimeStamp.push(format(fromUnixTime(history[i].timestamp), 'PP').toUpperCase())
-            }else{
+            } else {
                 coinTimeStamp.push(format(fromUnixTime(history[i].timestamp), 'LLL dd, p').toUpperCase())
             }
         }
@@ -146,17 +138,17 @@ export default function coinDetail({ coinDetail }) {
                                 weight: 'bold',
                                 size: 12
                             },
-                            callback: function(value, index, ticks) {
-                                
-                                if( time == '5y'){
+                            callback: function (value, index, ticks) {
+
+                                if (time == '5y') {
                                     return this.getLabelForValue(value).substring(this.getLabelForValue(value).length - 4);
                                 }
-                                else if( time == '3m'|| time == '1y'|| time == '3y'){
+                                else if (time == '3m' || time == '1y' || time == '3y') {
                                     return this.getLabelForValue(value).substring(0, 3);
                                 }
-                                else if( time == '7d'|| time == '30d' ){
+                                else if (time == '7d' || time == '30d') {
                                     return this.getLabelForValue(value).substring(0, 6);
-                                }else{
+                                } else {
                                     return this.getLabelForValue(value).substring(this.getLabelForValue(value).length - 8);
                                 }
                             }
@@ -167,7 +159,9 @@ export default function coinDetail({ coinDetail }) {
                     },
                     y: {
                         beginAtZero: false,
-                        position: 'right',
+                        position: {
+                            x: 5
+                        },
                         ticks: {
                             color: 'rgb(49 46 129)',
                             maxTicksLimit: 2,
@@ -175,7 +169,8 @@ export default function coinDetail({ coinDetail }) {
                                 weight: 'bold',
                                 size: 12
                             },
-                            callback: function(value, index, ticks) {
+                            z: 20,
+                            callback: function (value, index, ticks) {
                                 return '$' + value;
                             }
                         },
@@ -236,7 +231,7 @@ export default function coinDetail({ coinDetail }) {
                         const activePoint = chart.tooltip._active[0];
                         const { ctx } = chart;
                         const { x } = activePoint.element;
-                        const topY = chart.scales.y.top+50 ;
+                        const topY = chart.scales.y.top + 50;
                         const bottomY = chart.scales.y.bottom;
                         // draw vertical line
                         ctx.save();
@@ -291,9 +286,9 @@ export default function coinDetail({ coinDetail }) {
                 icon: <IoTrophyOutline />
             },
         ];
-        return stats && stats.map((stat) => {
+        return stats && stats.map((stat, index) => {
             return (
-                <tr className="border-y-2 border-indigo-50">
+                <tr className="border-y-2 border-indigo-50" key={index}>
                     <IconContext.Provider value={{ size: "1.5em" }}>
                         <td className="py-3 text-indigo-600">{stat.icon}</td>
                     </IconContext.Provider>
@@ -304,9 +299,9 @@ export default function coinDetail({ coinDetail }) {
         });
     }
     function renderProjectLinkBody() {
-        return coinDetail && coinDetail.links.map(link => {
+        return coinDetail && coinDetail.links.map((link, index) => {
             return (
-                <tr className="border-y-2 border-indigo-50 cursor-pointer">
+                <tr className="border-y-2 border-indigo-50 cursor-pointer" key={index}>
                     <td className="py-3  font-medium"><a href={link.url} >{link.type.charAt(0).toUpperCase() + link.type.slice(1)}</a></td>
                     <td className="py-3 text-right"><a href={link.url} >{link.name}</a></td>
                 </tr>
@@ -315,31 +310,34 @@ export default function coinDetail({ coinDetail }) {
     }
     function renderSelectTime() {
         const allTime = ['3h', '24h', '7d', '30d', '3m', '1y', '3y', '5y']
-        return allTime.map(timeSlot => {
+        return allTime.map((timeSlot, index) => {
             return (
-                <button onClick={() => setTime(timeSlot)} className={time == timeSlot ? 'font-bold py-1 px-4 bg-indigo-600 text-white rounded-full' : 'font-bold py-1 px-4 text-indigo-600'}>{timeSlot.toUpperCase()}</button>
+                <button key={index} onClick={() => setTime(timeSlot)} className={time == timeSlot ? 'font-medium md:font-bold py-1 px-2 md:px-4 bg-indigo-600 text-white rounded-md' : 'font-medium md:font-bold py-1 px-2 md:px-4 text-indigo-600'}>{timeSlot.toUpperCase()}</button>
             )
         })
     }
 
     return (
         <div className="flex h-full flex-col tracking-wide text-indigo-900">
+
+            <CreateHead page={coinDetail.name} />
             <div>
                 <div className='flex-auto max-w-screen-xl bg-white border-b-2 border-indigo-50 px-8 py-4 mx-auto flex'>
                     <img src={coinDetail.iconUrl} style={{ maxHeight: '40px', maxWidth: '40px' }} alt="cryptoIcon" className="align-middle mt-3" />
-                    <h1 className="text-4xl mt-3 font-bold pl-3">{coinDetail.name} ({coinDetail.symbol})</h1>
+                    <h1 className="text-3xl md:text-4xl mt-3 font-bold pl-3">{coinDetail.name} ({coinDetail.symbol})</h1>
                 </div>
+
                 <div className="flex-auto max-w-screen-xl px-8 pt-4 mx-auto">
-                    <div className="flex justify-between">
-                        <div className="text-2xl font-bold ">{coinDetail.symbol.toUpperCase()} price chart</div>
-                        <div className="flex rounded-lg border-2 border-indigo-50 py-2 px-6 font-bold">
+                    <div className="md:flex justify-between">
+                        <div className="text-xl md:text-2xl font-bold py-2">{coinDetail.symbol.toUpperCase()} price chart</div>
+                        <div className="flex rounded-lg border-2 border-indigo-50 py-2 px-6 font-bold w-fit">
                             <div className="pr-4">
                                 <span className="text-xs">Price to USD</span><br />
-                                <span className='text-2xl font-bold align-middle'>${ReadableNumber(coinDetail.price)}</span>
+                                <span className='text-xl md:text-2xl font-bold align-middle'>${ReadableNumber(coinDetail.price)}</span>
                             </div>
                             <div className="pl-4">
                                 <span className="text-xs">{time.toUpperCase()} change</span><br />
-                                <div className="py-1"><PercentageBetterment percentage={coinDetail.change}/></div>
+                                <div className="py-1"><PercentageBetterment percentage={coinDetail.change} /></div>
                             </div>
                         </div>
                     </div>
@@ -349,22 +347,22 @@ export default function coinDetail({ coinDetail }) {
                     {renderCryptoLineChart()}
                 </div>
                 <div className="flex-auto max-w-screen-xl px-8 py-2 mx-auto">
-                    <div className=" mx-auto rounded-full border-2 border-indigo-50 w-fit p-1">
+                    <div className=" mx-auto rounded-md border-2 border-indigo-50 w-fit p-1 text-sm md:text-base">
                         {renderSelectTime()}
                     </div>
                 </div>
                 <div className="flex-auto flex flex-col md:flex-row max-w-screen-xl py-4 mx-auto">
                     <div className="flex-1 px-8 text-lg">
-                        <h3 className="font-bold text-2xl py-4">{coinDetail.symbol} Value Statistics</h3>
-                        <table class="table  w-full">
+                        <h3 className="font-bold text-xl md:text-2xl py-4">{coinDetail.symbol} Value Statistics</h3>
+                        <table class="table text-sm md:text-base w-full">
                             <tbody>
                                 {renderCryptoStatBody()}
                             </tbody>
                         </table>
                     </div>
                     <div className="flex-1 px-8 text-lg">
-                        <h3 className="font-bold text-2xl py-4">Project links</h3>
-                        <table class="table  w-full">
+                        <h3 className="font-bold text-xl md:text-2xl py-4">Project links</h3>
+                        <table class="table text-sm md:text-base w-full">
                             <tbody>
                                 {renderProjectLinkBody()}
                             </tbody>
@@ -372,8 +370,8 @@ export default function coinDetail({ coinDetail }) {
                     </div>
                 </div>
                 <div className="flex-auto max-w-screen-xl px-8 py-4 mx-auto">
-                    <div className="w-[50%]">
-                        <h3 className="font-bold text-2xl ">What is {coinDetail?.name}</h3>
+                    <div className="md:w-[50%]">
+                        <h3 className="font-bold text-xl md:text-2xl ">What is {coinDetail?.name}</h3>
                         <div className={styles.description}>
                             {coinDetail && HTMLReactParser(coinDetail.description)}
                         </div>

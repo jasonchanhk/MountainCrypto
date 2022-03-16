@@ -14,6 +14,7 @@ import {
 } from 'chart.js';
 import styles from '../styles/Home.module.css'
 import Image from 'next/image'
+import CreateHead from '../components/head'
 
 ChartJS.register(
   LinearScale,
@@ -25,7 +26,7 @@ ChartJS.register(
   Tooltip,
 );
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   // Fetch data from external API
   const res = await fetch(`https://blokbot-dashboard-test.herokuapp.com/`)
   const data = await res.json()
@@ -50,50 +51,50 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
     return new_array_2dp
   }
 
-  function profit_labels(){
-    return LWP && 
+  function profit_labels() {
+    return LWP &&
       Object.keys(LWP.profits).map(value => value.substring(0, 3).toUpperCase())
   }
 
   function renderMixChart() {
     return LWP &&
-    <Chart type='bar' 
-      data={{
-        labels: profit_labels(),
-        datasets: [
-          {
-            type: 'line',
-            label: 'Cumulative profit',
-            borderColor: 'rgb(238 242 255)',
-            data: cumulativeArray(),
-            borderWidth: 3
-          },
-          {
-            type: 'bar',
-            label: 'Daily profit',
-            backgroundColor: 'rgb(165 180 252)',
-            hoverBackgroundColor: 'rgb(129 140 248)',
-            data: Object.values(LWP.profits),
-            barThickness: 40,
-            borderRadius: 5,
-          }
-        ]
-      }} 
-      height={"250px"}
-      options={{
-        maintainAspectRatio: false,
-        elements: {
-          point: {
+      <Chart type='bar'
+        data={{
+          labels: profit_labels(),
+          datasets: [
+            {
+              type: 'line',
+              label: 'Cumulative profit',
+              borderColor: 'rgb(238 242 255)',
+              data: cumulativeArray(),
+              borderWidth: 3
+            },
+            {
+              type: 'bar',
+              label: 'Daily profit',
+              backgroundColor: 'rgb(165 180 252)',
+              hoverBackgroundColor: 'rgb(129 140 248)',
+              data: Object.values(LWP.profits),
+              barThickness: 40,
+              borderRadius: 5,
+            }
+          ]
+        }}
+        height={"250px"}
+        options={{
+          maintainAspectRatio: false,
+          elements: {
+            point: {
               radius: 8,
-              hoverBorderWidth:3,
+              hoverBorderWidth: 3,
               hoverRadius: 10,
               backgroundColor: 'rgb(79 70 229)',
-          }
-        },
-        scales: {
-          x: {
-              ticks:{
-                color: 'rgb(79,70,229,1)',                
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: 'rgb(79,70,229,1)',
                 font: {
                   weight: 'bold',
                   size: 14
@@ -102,67 +103,67 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
               grid: {
                 display: false
               }
-          },
-          y: {
-            ticks:{
-              color: 'rgb(165,180,252,0.6)',
-              maxTicksLimit: 7,
-              font: {
-                weight: 'bold',
-                size: 12
-              }
             },
-            grid: {
-              drawBorder: false,
-              borderDash: [3],
-              drawTicks: false
+            y: {
+              ticks: {
+                color: 'rgb(165,180,252,0.6)',
+                maxTicksLimit: 7,
+                font: {
+                  weight: 'bold',
+                  size: 12
+                }
+              },
+              grid: {
+                drawBorder: false,
+                borderDash: [3],
+                drawTicks: false
+              }
             }
-          }            
-        },
-        plugins: {
-          legend: {
+          },
+          plugins: {
+            legend: {
               display: false,
-          },
-          annotation: {
+            },
+            annotation: {
               clip: false,
-          },
-          tooltip: {
-            backgroundColor: 'rgb(165 180 252)',
-            xAlign: 'center',
-            yAlign: 'bottom',
-            padding: 10,
-            displayColors: false,
-            titleAlign: 'center',
-            titleColor: 'white',
-            titleMarginBottom: 3,
-            titleFont:{
-              size: 14,
-              weight: 'bold'
             },
-            bodyAlign: 'center',
-            bodyColor: 'rgb(79 70 229)',
-            bodyFont:{
-              size: 16,
-              weight: 'bold'
-            },
-            callbacks: {
-              label: function(context) { 
-                return '$' + context.parsed.y;
+            tooltip: {
+              backgroundColor: 'rgb(165 180 252)',
+              xAlign: 'center',
+              yAlign: 'bottom',
+              padding: 10,
+              displayColors: false,
+              titleAlign: 'center',
+              titleColor: 'white',
+              titleMarginBottom: 3,
+              titleFont: {
+                size: 14,
+                weight: 'bold'
+              },
+              bodyAlign: 'center',
+              bodyColor: 'rgb(79 70 229)',
+              bodyFont: {
+                size: 16,
+                weight: 'bold'
+              },
+              callbacks: {
+                label: function (context) {
+                  return '$' + context.parsed.y;
+                }
               }
-            }
-          },
-      }
-      }}
-    />;
+            },
+          }
+        }}
+      />;
   }
 
   function renderBody() {
-    return ATP && ATP.pairs.map(obj => {
+    return ATP && ATP.pairs.map((obj, index) => {
       const twopairs = obj.pair.split('/');
       const sellingcoins = twopairs[0];
       const buyingcoins = twopairs[1];
       return (
-        <div className="p-2 bg-white rounded-md  text-indigo-900 flex flex-row mb-3">
+        <div className="p-2 bg-white rounded-md  text-indigo-900 flex flex-row mb-3" key={index}>
 
           <div className="flex flex-1 flex-col">
             <div class="flex-1 px-1 text-xs ">
@@ -202,14 +203,14 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
     )
   }
 
-  function renderTable(){
+  function renderTable() {
     return profit_labels().map((key, index) => {
-        return(
-        <tr className='text-indigo-900 text-sm'>
+      return (
+        <tr className='text-indigo-900 text-sm' key={index}>
           <td className='pl-4 px-2 border-y-2 border-indigo-50 py-1 font-light opacity-50'>{key}</td>
           <td className='text-center border-y-2 px-2 border-indigo-50 py-1 font-bold opacity-50'>${Object.values(LWP.profits)[index]}</td>
         </tr>
-        )
+      )
     })
   }
 
@@ -224,6 +225,8 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
 
   return (
     <div className="flex h-full flex-col w-full tracking-wide">
+
+      <CreateHead page={'Dashboard'} />
       <div>
         <div className='flex-auto max-w-screen-xl mx-auto border-b-2 border-indigo-50 px-8 py-4'>
           <h1 className="text-4xl mt-3 font-bold  text-indigo-600 ">Dashboard</h1>
@@ -272,11 +275,11 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
                   {renderMixChart()}
                 </div>
                 <div className='md:mr-6'>
-                  <div className='bg-indigo-50  rounded-lg text-center px-2 py-2 mb-6'>
+                  <div className='bg-indigo-50  rounded-lg text-center px-2 py-2 my-6'>
                     <div className='text-md font-thin w-full '>Last 7 Days Profit</div>
-                    <div className='text-xl font-bold w-fit mx-auto text-indigo-900'>${cumulativeArray()[cumulativeArray().length-1]}</div>
+                    <div className='text-xl font-bold w-fit mx-auto text-indigo-900'>${cumulativeArray()[cumulativeArray().length - 1]}</div>
                   </div>
-                  <div >
+                  <div className=' my-6'>
                     <table className='table-auto w-full'>
                       <tbody>
                         {renderTable()}

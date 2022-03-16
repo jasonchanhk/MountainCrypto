@@ -7,7 +7,7 @@ export function Twosection({reverse, gif, alt, href, children}){
     
   const [context, setContext] = useAppContext()
     return (
-    <div className={reverse ? 'flex flex-row-reverse my-8': 'flex flex-row my-8'}>
+    <div className={`flex flex-col my-8 ${reverse ? 'lg:flex-row-reverse': 'lg:flex-row'} `}>
         <div className='flex-1'>
             <div className='px-8 py-8'>
             {children}
@@ -19,7 +19,7 @@ export function Twosection({reverse, gif, alt, href, children}){
             </div>
         </div>
         <div className='flex-1'>
-            <div className='py-4 px-8 cursor-pointer'>
+            <div className='py-4 px-8 cursor-pointer flex justify-center'>
                 <div className='hover:shadow-xl hover:shadow-indigo-50 w-fit'>
                     <Link href={href}>
                         <Image
