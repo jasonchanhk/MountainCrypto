@@ -69,7 +69,7 @@ export default function Home() {
 
           {pageOverview.map(({ reverse, href, alt, src, tagline, desc }, index) => {
             return (
-              <Twosection reverse={reverse} src={src} href={href} alt={alt}>
+              <Twosection reverse={reverse} src={src} href={href} alt={alt} key={index}>
                 <h1 className='font-semibold text-indigo-600 text-4xl'>
                   <span className='font-thin'>Features {`${index + 1}`}:  </span>
                   {alt}

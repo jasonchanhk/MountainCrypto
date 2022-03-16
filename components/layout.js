@@ -46,9 +46,9 @@ export function TopPart({ title, children }) {
     )
 }
 
-export function ImageIntro({src, alt, size, desc, children }) {
+export function ImageIntro({src, alt, size, desc, key, children }) {
     return (
-        <div className='flex flex-col justify-center items-center pb-4 mx-auto'>
+        <div className='flex flex-col justify-center items-center pb-4 mx-auto' key={key}>
             <Image
                 src={src}
                 alt={alt}
