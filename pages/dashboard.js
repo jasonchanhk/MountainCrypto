@@ -7,6 +7,7 @@ import {
   LinearScale,
   CategoryScale,
   BarElement,
+  BarController,
   PointElement,
   LineElement,
   Legend,
@@ -20,6 +21,7 @@ ChartJS.register(
   LinearScale,
   CategoryScale,
   BarElement,
+  BarController,
   PointElement,
   LineElement,
   Legend,
@@ -58,7 +60,7 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
 
   function renderMixChart() {
     return LWP &&
-      <Chart type='bar'
+      <Chart
         data={{
           labels: profit_labels(),
           datasets: [
@@ -269,23 +271,22 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
             </div>
 
             <div className='text-2xl font-bold text-indigo-600 py-4'>Statistic</div>
-            <div className=''>
-              <div className='grid md:grid-cols-4'>
-                <div className='md:col-span-3'>
-                  {renderMixChart()}
+
+            <div className='flex flex-col md:flex-row'>
+              <div className='flex-auto'>
+                {renderMixChart()}
+              </div>
+              <div className='flex-auto md:mr-6'>
+                <div className='bg-indigo-50  rounded-lg text-center px-2 py-2 my-6'>
+                  <div className='text-md font-thin w-full '>Last 7 Days Profit</div>
+                  <div className='text-xl font-bold w-fit mx-auto text-indigo-900'>${cumulativeArray()[cumulativeArray().length - 1]}</div>
                 </div>
-                <div className='md:mr-6'>
-                  <div className='bg-indigo-50  rounded-lg text-center px-2 py-2 my-6'>
-                    <div className='text-md font-thin w-full '>Last 7 Days Profit</div>
-                    <div className='text-xl font-bold w-fit mx-auto text-indigo-900'>${cumulativeArray()[cumulativeArray().length - 1]}</div>
-                  </div>
-                  <div className=' my-6'>
-                    <table className='table-auto w-full'>
-                      <tbody>
-                        {renderTable()}
-                      </tbody>
-                    </table>
-                  </div>
+                <div className=' my-6'>
+                  <table className='table-auto w-full'>
+                    <tbody>
+                      {renderTable()}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
