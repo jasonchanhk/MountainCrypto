@@ -16,6 +16,7 @@ import {
 import styles from '../styles/Home.module.css'
 import Image from 'next/image'
 import CreateHead from '../components/head'
+import { TopPart } from '../components/layout'
 
 ChartJS.register(
   LinearScale,
@@ -230,9 +231,7 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
 
       <CreateHead page={'Dashboard'} />
       <div>
-        <div className='flex-auto max-w-screen-xl mx-auto border-b-2 border-indigo-50 px-8 py-4'>
-          <h1 className="text-4xl mt-3 font-bold  text-indigo-600 ">Dashboard</h1>
-        </div>
+        <TopPart title={'Dashboard'}/>
 
         <div className='flex flex-col flex-auto md:flex-row px-8 py-6 my-auto max-w-screen-xl  mx-auto'>
           <div className='flex-1'>

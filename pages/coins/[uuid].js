@@ -23,7 +23,7 @@ import { PercentageBetterment, ReadableNumber } from '../../components/expressio
 import { getData } from '../api/fetchingcoin/[...params]'
 import CreateHead from '../../components/head';
 import Image from 'next/image'
-
+import { TopPart } from '../../components/layout'
 
 ChartJS.register(
     CategoryScale,
@@ -117,7 +117,6 @@ export default function CoinDetail({ coinDetail }) {
                         }
                     }]
             }}
-            height={400}
             options={{
                 maintainAspectRatio: false,
                 filler: {
@@ -322,16 +321,15 @@ export default function CoinDetail({ coinDetail }) {
 
             <CreateHead page={coinDetail.name} />
             <div>
-                <div className='flex-auto max-w-screen-xl bg-white border-b-2 border-indigo-50 px-8 py-4 mx-auto flex'>
-                    <span className="align-middle mt-3">
+                <TopPart title={`${coinDetail.name} (${coinDetail.symbol})`}>
+                    <span className="align-middle mt-3 pr-3">
                         <Image
                             src={coinDetail.iconUrl}
                             alt="cryptoIcon"
                             width={40}
                             height={40}/>
-                    </span>
-                    <h1 className="text-3xl md:text-4xl mt-3 font-bold pl-3">{coinDetail.name} ({coinDetail.symbol})</h1>
-                </div>
+                    </span>                    
+                </TopPart>
 
                 <div className="flex-auto max-w-screen-xl px-8 pt-4 mx-auto">
                     <div className="md:flex justify-between">
@@ -349,7 +347,7 @@ export default function CoinDetail({ coinDetail }) {
                     </div>
                 </div>
 
-                <div className="flex-auto max-w-screen-xl px-8 py-4 mx-auto">
+                <div className="flex-auto max-w-screen-xl px-8 py-4 mx-auto h-80 md:h-[28rem]">
                     {renderCryptoLineChart()}
                 </div>
                 <div className="flex-auto max-w-screen-xl px-8 py-2 mx-auto">
@@ -359,7 +357,7 @@ export default function CoinDetail({ coinDetail }) {
                 </div>
                 <div className="flex-auto flex flex-col md:flex-row max-w-screen-xl py-4 mx-auto">
                     <div className="flex-1 px-8 text-lg">
-                        <h3 className="font-bold text-xl md:text-2xl py-4">{coinDetail.symbol} Value Statistics</h3>
+                        <h3 className="font-bold text-xl md:text-2xl py-4">{coinDetail.symbol} value statistics</h3>
                         <table className="table text-sm md:text-base w-full">
                             <tbody>
                                 {renderCryptoStatBody()}

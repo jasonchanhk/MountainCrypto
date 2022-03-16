@@ -2,6 +2,7 @@ import { formatDistanceToNowStrict, parseISO } from 'date-fns'
 import { getData } from './api/fetchingnews'
 import CreateHead from '../components/head'
 import Image from 'next/image'
+import { TopPart } from '../components/layout'
 
 export async function getServerSideProps() {
   const newsList = await getData()
@@ -66,10 +67,8 @@ export default function News({ newsList }) {
 
       <CreateHead page={'News'} />
 
-      <div className="">
-        <div className='flex-auto max-w-screen-xl mx-auto border-b-2 border-indigo-50 px-8 py-4'>
-          <h1 className="text-4xl mt-3 font-bold  text-indigo-600 ">News</h1>
-        </div>
+      <div>
+        <TopPart title={'News'}/>
 
         <div className="flex-auto max-w-screen-xl px-8 py-4 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
