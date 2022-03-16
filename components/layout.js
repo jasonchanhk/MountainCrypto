@@ -11,7 +11,7 @@ export function Twosection({reverse, gif, alt, href, children}){
         <div className='flex-1'>
             <div className='px-8 py-8'>
             {children}
-            <Link href={href}>
+            <Link href={href} passHref>
               <button className=' bg-indigo-600 px-4 py-2 rounded-full' onClick={() => {setContext(href)}}>
                 <div className='text-white font-bold whitespace-nowrap flex align-middle'>Visit {alt} <span className='py-1 pl-2'><FaArrowRight/></span></div>
               </button>
@@ -21,7 +21,7 @@ export function Twosection({reverse, gif, alt, href, children}){
         <div className='flex-1'>
             <div className='py-4 px-8 cursor-pointer flex justify-center'>
                 <div className='hover:shadow-xl hover:shadow-indigo-50 w-fit'>
-                    <Link href={href}>
+                    <Link href={href} passHref>
                         <Image
                         src={`/images/${gif}.gif`}
                         alt={alt}

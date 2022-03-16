@@ -52,7 +52,7 @@ export default function Layout({ children }) {
                         {menuItems.map(({ href, title, icon }) => (
                             <li className='my-4' key={title}>
                                 <IconContext.Provider value={{ size: "1.5em" }}>
-                                    <Link href={href}>
+                                    <Link href={href} passHref>
                                         <a
                                             className={context == href ? "flex ml-6 mr-8 my-1 px-5 py-3 rounded-full bg-gradient-to-br from-indigo-800 to-indigo-600 text-white cursor-pointer font-medium" : "flex ml-6 mr-8 my-1 px-5 py-3 rounded-full  text-indigo-300 hover:text-indigo-200 active:text-indigo-400 cursor-pointer font-medium"}
                                             onClick={() => { setContext(href), setShowSidebar(!showSidebar) }}
@@ -70,7 +70,7 @@ export default function Layout({ children }) {
                 <div className='h-14 flex justify-between sticky top-0 z-40 lg:hidden bg-indigo-600 text-white'>
 
                     <IconContext.Provider value={{ size: "2em" }}>
-                        <div className='px-4 flex items-center'>
+                        <div className='px-4 flex items-center cursor-pointer'>
                             <Link href={'/'}>
                                 <GiMountaintop />
                             </Link>

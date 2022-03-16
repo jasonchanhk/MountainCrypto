@@ -22,7 +22,7 @@ import { fromUnixTime, format } from 'date-fns'
 import { PercentageBetterment, ReadableNumber } from '../../components/expression'
 import { getData } from '../api/fetchingcoin/[...params]'
 import CreateHead from '../../components/head';
-import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 
 ChartJS.register(
@@ -65,7 +65,7 @@ export async function getServerSideProps(context) {
     };
 }
 
-export default function coinDetail({ coinDetail }) {
+export default function CoinDetail({ coinDetail }) {
 
     const [time, setTime] = useState('24h')
     const [history, setHistory] = useState([])
@@ -75,15 +75,15 @@ export default function coinDetail({ coinDetail }) {
 
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/fetchingcoin/${uuid}/${time}`)
             .then((res) => res.json())
-            .then((data) => {                
-                const currentHistory=  data.data
+            .then((data) => {
+                const currentHistory = data.data
                 setHistory(currentHistory)
                 console.log(currentHistory)
             })
             .catch((error) => {
                 console.log('error', error)
             })
-    }, [time])
+    }, [time, uuid])
 
     function renderCryptoLineChart() {
         let coinPrice = [];
@@ -323,7 +323,13 @@ export default function coinDetail({ coinDetail }) {
             <CreateHead page={coinDetail.name} />
             <div>
                 <div className='flex-auto max-w-screen-xl bg-white border-b-2 border-indigo-50 px-8 py-4 mx-auto flex'>
-                    <img src={coinDetail.iconUrl} style={{ maxHeight: '40px', maxWidth: '40px' }} alt="cryptoIcon" className="align-middle mt-3" />
+                    <span className="align-middle mt-3">
+                        <Image
+                            src={coinDetail.iconUrl}
+                            alt="cryptoIcon"
+                            width={40}
+                            height={40}/>
+                    </span>
                     <h1 className="text-3xl md:text-4xl mt-3 font-bold pl-3">{coinDetail.name} ({coinDetail.symbol})</h1>
                 </div>
 
@@ -354,7 +360,7 @@ export default function coinDetail({ coinDetail }) {
                 <div className="flex-auto flex flex-col md:flex-row max-w-screen-xl py-4 mx-auto">
                     <div className="flex-1 px-8 text-lg">
                         <h3 className="font-bold text-xl md:text-2xl py-4">{coinDetail.symbol} Value Statistics</h3>
-                        <table class="table text-sm md:text-base w-full">
+                        <table className="table text-sm md:text-base w-full">
                             <tbody>
                                 {renderCryptoStatBody()}
                             </tbody>
@@ -362,7 +368,7 @@ export default function coinDetail({ coinDetail }) {
                     </div>
                     <div className="flex-1 px-8 text-lg">
                         <h3 className="font-bold text-xl md:text-2xl py-4">Project links</h3>
-                        <table class="table text-sm md:text-base w-full">
+                        <table className="table text-sm md:text-base w-full">
                             <tbody>
                                 {renderProjectLinkBody()}
                             </tbody>

@@ -20,6 +20,7 @@ export default function Home() {
           <div className='flex flex-col justify-center items-center pb-4 border-b-2 border-indigo-50 mx-auto'>
             <Image
               src={`/images/20945663.jpg`}
+              alt='MountCrypto'
               width={450}
               height={450}
             />

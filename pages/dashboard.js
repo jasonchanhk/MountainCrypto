@@ -166,7 +166,7 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
         <div className="p-2 bg-white rounded-md  text-indigo-900 flex flex-row mb-3" key={index}>
 
           <div className="flex flex-1 flex-col">
-            <div class="flex-1 px-1 text-xs ">
+            <div className="flex-1 px-1 text-xs ">
               <span className='mr-2 bg-indigo-100 text-indigo-500 rounded-full px-2'>{format(parseISO(obj.date), 'dd LLL, yyyy').toUpperCase()}</span><span className='bg-yellow-100 text-yellow-500 rounded-full px-2'>{obj.time}</span>
             </div>
 

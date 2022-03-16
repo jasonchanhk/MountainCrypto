@@ -30,10 +30,19 @@ export default function Coins({ cryptosList }) {
   function renderList() {
     return cryptos && cryptos.map((currency, index) => {
       return (
-        <Link href={`/coins/${currency.uuid}`} key={index}>
+        <Link href={`/coins/${currency.uuid}`} key={index} passHref>
           <tr className="border-y-2 border-indigo-50 cursor-pointer text-sm md:text-base">
             <td className="py-2 pl-8 md:pl-14 lg:pl-24 font-medium w-21" style={{ width: '12%' }}>{(index + 1)}</td>
-            <td className="p-2" style={{ width: '5%' }}><img src={currency.iconUrl} style={{ maxHeight: '30px', maxWidth: '30px' }} alt="cryptoIcon" /></td>
+            <td className="p-2" style={{ width: '5%' }}>
+              <span className='flex align-middle'>
+                <Image
+                  src={currency.iconUrl}
+                  alt="cryptoIcon"
+                  width={30}
+                  height={30}
+                  layout='fixed'/>
+              </span>
+            </td>
             <td className="py-2 font-bold leading-5" style={{ width: '20%' }}>{currency.name}<br /><span className='font-thin'>{currency.symbol}</span></td>
             <td className="py-2 font-medium" style={{ width: '25%' }}>$ {ReadableNumber(currency.price)}</td>
             <td className="py-2 font-medium hidden lg:table-cell" style={{ width: '20%' }}>$ {millify(currency.marketCap, {
@@ -41,7 +50,7 @@ export default function Coins({ cryptosList }) {
               units: ['', 'K', 'Million', 'Billion', 'Tillion', 'P', 'E'],
               space: true,
             })}</td>
-            <td className="py-2 pr-8 md:pr-14" style={{ width: '18%' }}><PercentageBetterment percentage={currency.change}/></td>
+            <td className="py-2 pr-8 md:pr-14" style={{ width: '18%' }}><PercentageBetterment percentage={currency.change} /></td>
           </tr>
         </Link>
       );
@@ -49,7 +58,7 @@ export default function Coins({ cryptosList }) {
   }
   return (
     <div className="flex h-full flex-col tracking-wide text-indigo-900">
-          
+
       <CreateHead page={'Coins'} />
 
       <div>

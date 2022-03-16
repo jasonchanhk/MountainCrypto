@@ -5,7 +5,7 @@ const cryptoApiHeaders = {
     'x-rapidapi-key': process.env.COINLIST_X_RAPIDAPI_KEY,
 };
 
-export default async function (req, res) {
+export default async function handler(req, res) {
     // Fetch data from external API
     const response = await axios.get(`https://coinranking1.p.rapidapi.com/coins/?limit=${100}`, { headers: cryptoApiHeaders })
     // Pass data to the page via props

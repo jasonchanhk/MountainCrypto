@@ -30,7 +30,13 @@ export default function News({ newsList }) {
                   <h6 className="font-bold leading-5 pr-2">{news.name}</h6>
                 </div>
                 <div className="basis-1/4	">
-                  <img src={news?.image?.thumbnail?.contentUrl || demoImage} style={{ maxHeight: '100px', maxWidth: '100px', padding: "0px" }} alt="news" />
+                  <Image
+                    src={news?.image?.thumbnail?.contentUrl || demoImage}
+                    alt="news"
+                    width={100}
+                    height={100} />
+
+
                 </div>
               </div>
 

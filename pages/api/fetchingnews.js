@@ -6,7 +6,7 @@ const cryptoApiHeaders = {
   'x-rapidapi-key': `${process.env.NEWS_X_RAPIDAPI_KEY}`
 };
 
-export default async function(req, res) {
+export default async function handler(req, res) {
   // Fetch data from external API
   const response = await axios.get(`https://bing-news-search1.p.rapidapi.com/news/search?q=cryptocurrency&safeSearch=Off&textFormat=Raw&freshness=Day&count=16`, { headers: cryptoApiHeaders })
   // Pass data to the page via props
