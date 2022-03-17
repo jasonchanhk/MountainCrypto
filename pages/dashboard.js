@@ -237,7 +237,7 @@ export default function Dashboard({ ATP, TFCM, LWP, TFPM, AT }) {
           <div className='flex-1'>
             <div className='text-2xl font-bold text-indigo-600 py-4'>Overview</div>
 
-            <div className='grid grid-cols-2 md:grid-cols-4 text-indigo-900'>
+            <div className='grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-indigo-900 md:mr-6'>
               <div>{renderCard(
                 <Image
                   src="/images/wallet.png"

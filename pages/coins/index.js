@@ -80,7 +80,7 @@ export default function Coins({ cryptosList }) {
         </div>
 
         <div className="flex mx-auto max-w-screen-xl justify-center mb-8">
-          <span className="input-group-text pr-3 font-bold rounded-l-full bg-indigo-50 py-2 pl-4 text-indigo-600">Search</span>
+          <span className="flex items-center input-group-text pr-3 font-bold rounded-l-full bg-indigo-50 py-2 pl-4 text-indigo-600">Search</span>
           <span className="py-2 pr-4 rounded-r-full bg-white border-2 border-indigo-50">
             <input
               className="focus:outline-none font-medium uppercase pl-2 tracking-wider"
