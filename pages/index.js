@@ -14,7 +14,7 @@ export default function Home() {
       alt: 'Dashboard',
       src: '/images/dashboard_demo.gif',
       tagline: 'Track your profit on our bots',
-      desc: 'Pay attention to your stats everyday, the bots toke the heavy lifting but you should definitely see how the mircale happens. Be informed with the active trading pairs and actualized profits.'
+      desc: 'Pay attention to your stats everyday, the bots take the heavy lifting but you should definitely see how the mircale happens. Be informed with the active trading pairs and actualized profits.'
     },
     {
       reverse: true,
@@ -71,7 +71,7 @@ export default function Home() {
             return (
               <Twosection reverse={reverse} src={src} href={href} alt={alt} key={index}>
                 <h1 className='font-semibold text-indigo-600 text-4xl'>
-                  <span className='font-thin'>Features {`${index + 1}`}:  </span>
+                  <span className='font-thin'>Feature {`${index + 1}`}:  </span>
                   {alt}
                 </h1>
                 <h3 className='font-medium opacity-30 text-indigo-900 text-lg py-2'>{tagline}</h3>
